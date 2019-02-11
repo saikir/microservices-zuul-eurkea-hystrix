@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: Hello Server
+    
+eureka:
+  client:
+    register-with-eureka: true

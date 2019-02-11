@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: helloworld-client
+    
+server:
+  port: 8902

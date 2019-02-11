@@ -1,0 +1,6 @@
+package com.bookstore.helloworldclient;
+
+@RestController
+public class HelloResource {
+
+}

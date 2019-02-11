@@ -1,0 +1,5 @@
+package com.bookstore.helloworldclient;
+
+public class HelloResource {
+
+}
