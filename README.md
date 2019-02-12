@@ -12,6 +12,7 @@ Makes the application highly available at any cost.
 
 Eureka registry server: Netflix open source application. which used for service discovery (without having the server knowledge.)
 Dependencies:
+	
 	1. To generate this one, we need to create a spring boot application with "eureka server" as a dependency.
 	2. Add @EnableEurekaServer annotation to the application.java class.
 	3. Add application.yml file to not register this eureka server as one of the service and add below lines.
@@ -26,6 +27,7 @@ Dependencies:
 
 
 Helloworld-server:
+	
 	1. Add eureka-discovery and mvc as dependency and add @EnableDiscoveryClient annotation to application class.
 	2. Add application.yml file and config:
 		spring:
@@ -43,6 +45,7 @@ Helloworld-server:
 		  
 
 Helloworld-client:
+	
 	1. Add eureka-discovery and mvc as dependency and add @EnableDiscoveryClient annotation to application class.
 	2. Add application.yml file and config:
 		spring:
@@ -90,9 +93,10 @@ Production ready implementation of the circuit-breaker pattern for reducing the 
 *Handles the external service calls*.
 
 Implementation of Hystrix:
+	
 	1. Add Hystrix Dependency and add @EnableCircuitBreaker to application class.
-	2. Add @HystrixCommand(fallbackMethod = "fallback") annotation to the method which calls to external services. and we need to create a method name "fallback".
-Note: The fallback method should return the same object which the annotated method calls. 
+	2. Add @HystrixCommand(fallbackMethod = "fallback") annotation to the method which calls to external services. and we 		need to create a method name "fallback".
+	Note: The fallback method should return the same object which the annotated method calls. 
 	3. Throwable argument helps to find the exception for calling the fallback.
 
 	@HystrixCommand(fallbackMethod="fallback")
@@ -136,6 +140,7 @@ Using Zuul we can call the /catalog service without knowing its hostname and por
 hostname:8080/api/catalog 
 
 Implementation of Zuul:
+	
 	1. Add Zuul as dependency and add @EnableZuulProxy annotation to the application.
 	2. Add application.yml file as below.
 		spring:
