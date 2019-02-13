@@ -167,3 +167,161 @@ Implementation of Zuul:
 		      service-id: hello-client
 		  
 		
+DB-Service:
+		  
+Implementing dbservice:
+	
+	1. Add mysql, jpa and mvc as dependency.
+	2. Add below in application.properties.
+		spring.datasource.url=jdbc:mysql://localhost:3306/stockprices
+		spring.datasource.username=root
+		spring.datasource.password =zxcvbnmm
+		spring.datasource.testWhileIdle=true
+		spring.datasource.validationQuery=SELECT 1
+		spring.jpa.show-sql=true
+		#spring.jpa.hibernate.ddl-auto=update
+		spring.jpa.hibernate.naming-strategy=org.hibernate.cfg.ImprovedNamingStrategy
+		spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+		
+	3. Add @EnableJpaRepositories(basePackages = "com.bookstore.dbservice.repository")
+	4. DbServiceRepository.java
+		package com.bookstore.dbservice.resource;
+		
+		import java.util.List;
+		
+		import org.springframework.beans.factory.annotation.Autowired;
+		import org.springframework.web.bind.annotation.GetMapping;
+		import org.springframework.web.bind.annotation.PathVariable;
+		import org.springframework.web.bind.annotation.RequestMapping;
+		import org.springframework.web.bind.annotation.RestController;
+		
+		import com.bookstore.dbservice.model.Books;
+		import com.bookstore.dbservice.repository.BooksRepository;
+		
+		@RestController
+		@RequestMapping("/dbservice/")
+		public class DbServiceResource {
+		
+			@Autowired
+			BooksRepository bookRepository;
+		
+			@GetMapping("/showbooks")
+			public List<Books> showBooks() {
+				List<Books> myBooks = (List<Books>) bookRepository.findAll();
+				System.out.println(myBooks);
+				return myBooks;
+			}
+			
+			@GetMapping("/findbystatus/{status}")
+			public List<Books> findByStatus(@PathVariable("status") final String status) {
+				System.out.println(status);
+				return bookRepository.findByStatus(status);
+			}
+		}
+		a. 
+	5. BookRepository.java
+		package com.bookstore.dbservice.repository;
+		
+		import java.util.List;
+		
+		import org.springframework.data.jpa.repository.Query;
+		import org.springframework.data.repository.CrudRepository;
+		import org.springframework.data.repository.query.Param;
+		
+		import com.bookstore.dbservice.model.Books;
+		
+		public interface BooksRepository extends CrudRepository<Books, Integer>{
+		
+		/*@Query("SELECT * FROM Books ORDER BY id")
+		List<Book> showAll();*/
+		@Query("SELECT b FROM Books b WHERE b.status LIKE :status")
+		List<Books> findByStatus(@Param("status") String status);
+		
+		}
+		
+	6. Books.java (entity class)
+		package com.bookstore.dbservice.model;
+		
+		import javax.persistence.*;
+		
+		@Entity
+		@Table(name="books", catalog="mymc")
+		public class Books {
+		
+		@Id
+		@Column(name="book_id", unique=true)
+		@GeneratedValue(strategy=GenerationType.AUTO)
+		private int Id;
+		@Column(name="book_name")
+		private String bookName;
+		@Column(name="author_name")
+		private String author;
+		@Column(name="genre")
+		private String genre;
+		@Column(name="status")
+		private String status;
+		
+		public int getId() {
+		return Id;
+		}
+		
+		public void setId(int id) {
+		Id = id;
+		}
+		
+		public String getBookName() {
+		return bookName;
+		}
+		
+		public void setBookName(String bookName) {
+		this.bookName = bookName;
+		}
+		
+		public String getAuthor() {
+		return author;
+		}
+		
+		public void setAuthor(String author) {
+		this.author = author;
+		}
+		
+		public String getGenre() {
+		return genre;
+		}
+		
+		public void setGenre(String genre) {
+		this.genre = genre;
+		}
+		
+		public String getStatus() {
+		return status;
+		}
+		
+		public void setStatus(String status) {
+		this.status = status;
+		}
+		
+		public Books(int id, String bookName, String author, String genre, String status) {
+		super();
+		Id = id;
+		this.bookName = bookName;
+		this.author = author;
+		this.genre = genre;
+		this.status = status;
+		}
+		
+		protected Books() {
+		}
+		
+		@Override
+		public String toString() {
+		return "Books [Id=" + Id + ", bookName=" + bookName + ", author=" + author + ", genre=" + genre + ", status="
+		+ status + "]";
+		}
+		}
+		
+		
+Testing:
+http://localhost:8903/api/client/hello/client/findbooksbystatus/Available
+
+the above url call using zuul host and port http://localhost:8903, prefix /api, client service /client, request mapping path in client /hello/client, getmapping method /findbookbystatus/{status} which calls the db-service by rest template in hello client.
