@@ -20,4 +20,7 @@ zuul:
     hello-client:
       path: /client/**
       service-id: hello-client
+    db-service:
+      path: /dbservice/**
+      service-id: db-service
   

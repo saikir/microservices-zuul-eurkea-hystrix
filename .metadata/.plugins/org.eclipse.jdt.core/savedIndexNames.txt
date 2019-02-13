@@ -116,7 +116,6 @@ INDEX VERSION 1.131+/Users/saikiran/mc_sts_workspace/.metadata/.plugins/org.ecli
 2781294596.index
 3229335202.index
 3224210415.index
-3405313534.index
 3891506980.index
 2996557241.index
 3303801988.index

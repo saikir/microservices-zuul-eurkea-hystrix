@@ -12,7 +12,7 @@ import com.bookstore.dbservice.model.Books;
 import com.bookstore.dbservice.repository.BooksRepository;
 
 @RestController
-@RequestMapping("/dbservice/")
+@RequestMapping("/dbservice")
 public class DbServiceResource {
 
 	@Autowired
